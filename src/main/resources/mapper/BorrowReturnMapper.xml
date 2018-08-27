@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.dao.BorrowReturnDao">
+    <insert id="addRecord" parameterType="com.example.entity.BorrowReturn">
+        insert into borrowreturn(bookId,borrowTime,fullname,bookStatus,returnTime,dueTime)
+          values(#{bookId},#{borrowTime},#{fullname},#{bookStatus},#{returnTime},#{dueTime})
+    </insert>
+
+    <delete id="deleteRecord" parameterType="com.example.entity.BorrowReturn">
+        delete from borrowreturn where bookId =#{bookId} and fullname= #{fullname};
+    </delete>
+
+    <select id="selectAll" resultType="com.example.entity.BorrowReturn">
+        select bookId,borrowTime,fullname,bookStatus,returnTime,dueTime from borrowreturn ORder by borrowTime DESC ;
+    </select>
+
+    <select id="selectByBookId" parameterType="java.lang.String" resultType="com.example.entity.BorrowReturn">
+        SELECT bookId,borrowTime,fullname,bookStatus,returnTime,dueTime from borrowreturn where bookId  like #{_parameter} ORder by borrowTime DESC;
+    </select>
+
+    <select id="selectFullname" parameterType="java.lang.String" resultType="com.example.entity.BorrowReturn">
+        SELECT bookId,borrowTime,fullname,bookStatus,returnTime,dueTime from borrowreturn where fullname like #{_parameter} ORder by borrowTime DESC;
+    </select>
+
+    <select id="selectByStatus" parameterType="int" resultType="com.example.entity.BorrowReturn">
+        SELECT bookId,borrowTime,fullname,bookStatus,returnTime,dueTime from borrowreturn where bookStatus=#{id} ORder by borrowTime DESC;
+    </select>
+
+    <select id="selectByBookName" parameterType="java.lang.String" resultType="com.example.entity.BorrowReturn">
+        SELECT bookId,borrowTime,fullname,bookStatus,returnTime,dueTime from borrowreturn where
+        bookId in (select bookId from books where bookName like #{_parameter}) ORder by borrowTime DESC;
+    </select>
+
+    <select id="selectByStudentId" parameterType="java.lang.String" resultType="com.example.entity.BorrowReturn">
+        SELECT bookId,borrowTime,fullname,bookStatus,returnTime,dueTime from borrowreturn where
+        fullname in (select fullname from users where studentId like #{_parameter});
+    </select>
+
+    <update id="update" parameterType="com.example.entity.BorrowReturn">
+        update borrowreturn set borrowTime=#{borrowTime} where fullname=#{fullname} and bookId=#{bookId};
+    </update>
+
+    <update id="changeStatus" parameterType="com.example.entity.BorrowReturn">
+        update borrowreturn set bookStatus =0 where fullname=#{fullname} and bookId=#{bookId};
+     </update>
+</mapper>
